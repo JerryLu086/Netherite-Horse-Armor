@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.jerrylu086.netherite_horse_armor.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "netherite_horse_armor.refmap.json",
+  "mixins": [
+    "accessor.LootPoolAccessor",
+    "accessor.LootTableAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
