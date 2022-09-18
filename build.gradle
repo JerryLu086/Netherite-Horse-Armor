@@ -22,7 +22,7 @@ mixin {
     add sourceSets.main, "netherite_horse_armor.refmap.json"
 }
 
-version = "${mod_version}"
+version = "${mc_version}-${mod_version}"
 group = 'com.jerrylu086.netherite_horse_armor'
 archivesBaseName = 'netherite_horse_armor'
 
