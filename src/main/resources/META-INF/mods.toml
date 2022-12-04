@@ -12,14 +12,14 @@ license="MIT License"
     itemIcon="netherite_horse_armor:netherite_horse_armor"
     configBackground="minecraft:textures/block/netherrack.png"
 
-[[dependencies.upgradedechests]]
+[[dependencies.netherite_horse_armor]]
     modId="forge"
     mandatory=true
     versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.upgradedechests]]
+[[dependencies.netherite_horse_armor]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.19.2,1.20)"
