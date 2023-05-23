@@ -4,7 +4,7 @@ license="MIT License"
 
 [[mods]]
     modId="netherite_horse_armor"
-    version="1.19-1.0.1"
+    version="1.19-1.0.2"
     displayName="Netherite Horse Armor"
     logoFile="pack.png"
     authors="jerrylu086"
