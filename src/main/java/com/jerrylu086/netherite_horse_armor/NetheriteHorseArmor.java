@@ -53,7 +53,7 @@ public class NetheriteHorseArmor {
         static {
             ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
             BUILTIN_LOOT_GENERATION = BUILDER.push("Obtaining Netherite Horse Armor").comment("Should the game use builtin loot generation(in the bastion treasure loot table) for the horse armor? (this mod doesn't use data pack due to compatibility problems)").define("builtinLootGeneration", true);
-            WEIGHT = BUILDER.comment("If use the builtin loot generation, how much the weight should be? (default: 8, about 20% chance)").defineInRange("weight", 8, 1, Integer.MAX_VALUE);
+            WEIGHT = BUILDER.comment("If use the builtin loot generation, how much the weight should be? (default: 8)").defineInRange("weight", 8, 1, Integer.MAX_VALUE);
             COMMON = BUILDER.build();
         }
     }
