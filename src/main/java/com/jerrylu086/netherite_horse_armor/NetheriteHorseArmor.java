@@ -47,13 +47,11 @@ public class NetheriteHorseArmor {
 
     public static class Configuration {
         public static ForgeConfigSpec COMMON;
-        public static ForgeConfigSpec.BooleanValue BUILTIN_LOOT_GENERATION;
         public static ForgeConfigSpec.IntValue WEIGHT;
 
         static {
             ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-            BUILTIN_LOOT_GENERATION = BUILDER.push("Obtaining Netherite Horse Armor").comment("Should the game use builtin loot generation(in the bastion treasure loot table) for the horse armor? (this mod doesn't use data pack due to compatibility problems)").define("builtinLootGeneration", true);
-            WEIGHT = BUILDER.comment("If use the builtin loot generation, how much the weight should be? (default: 8)").defineInRange("weight", 8, 1, Integer.MAX_VALUE);
+            WEIGHT = BUILDER.comment("How much weight you want your horse armor to be in the loot table (bastion treasure) ? Set to 0 to disable. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
             COMMON = BUILDER.build();
         }
     }
@@ -61,7 +59,7 @@ public class NetheriteHorseArmor {
     // From Quark mod by Team Violet Moon. GitHub: https://github.com/VazkiiMods/Quark/blob/master/src/main/java/vazkii/quark/content/tools/module/ColorRunesModule.java#L177
     @SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
-        if(!(event.getName().equals(BuiltInLootTables.BASTION_TREASURE) && Configuration.BUILTIN_LOOT_GENERATION.get()))
+        if(!(event.getName().equals(BuiltInLootTables.BASTION_TREASURE) && Configuration.WEIGHT.get() > 0))
             return;
 
         var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR.get()).setWeight(Configuration.WEIGHT.get()).setQuality(1).build();
