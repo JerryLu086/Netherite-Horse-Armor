@@ -51,7 +51,7 @@ public class NetheriteHorseArmor {
 
         static {
             ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-            WEIGHT = BUILDER.comment("How much is the weight you want your horse armor to be in the loot table? Set to 0 to disable. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
+            WEIGHT = BUILDER.comment("How much is the weight you want your horse armor to be in the loot table (bastion treasure) ? Set to 0 to disable. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
             COMMON = BUILDER.build();
         }
     }
