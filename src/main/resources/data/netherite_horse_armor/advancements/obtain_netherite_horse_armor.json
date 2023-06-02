@@ -1,40 +1,38 @@
 {
   "parent": "minecraft:nether/loot_bastion",
-  "criteria": {
-    "netherite_horse_armor": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "netherite_horse_armor:netherite_horse_armor"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    }
-  },
   "display": {
-    "announce_to_chat": true,
+    "icon": {
+      "item": "netherite_horse_armor:netherite_horse_armor"
+    },
+    "title": {
+      "translate": "netherite_horse_armor.advancements.obtain.title"
+    },
     "description": {
       "translate": "netherite_horse_armor.advancements.obtain.description"
     },
     "frame": "challenge",
-    "hidden": false,
-    "icon": {
-      "item": "netherite_horse_armor:netherite_horse_armor"
-    },
     "show_toast": true,
-    "title": {
-      "translate": "netherite_horse_armor.advancements.obtain.title"
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 50
+  },
+  "criteria": {
+    "netherite_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "netherite_horse_armor:netherite_horse_armor"
+          }
+        ]
+      }
     }
   },
   "requirements": [
     [
       "netherite_horse_armor"
     ]
-  ],
-  "rewards": {
-    "experience": 50
-  }
+  ]
 }
