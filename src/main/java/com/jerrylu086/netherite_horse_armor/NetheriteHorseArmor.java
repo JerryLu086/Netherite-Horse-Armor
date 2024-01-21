@@ -11,7 +11,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,7 +35,12 @@ public class NetheriteHorseArmor {
 
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
             new HorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
-                    new Item.Properties().stacksTo(1).fireResistant()));
+                    new Item.Properties().stacksTo(1).fireResistant()) {
+                @Override
+                public int getProtection() {
+                    return Configuration.PROTECTION_VALUE.get();
+                }
+            });
 
     public NetheriteHorseArmor() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -47,8 +52,8 @@ public class NetheriteHorseArmor {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void addToTab(CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == CreativeModeTabs.COMBAT) {
+    private void addToTab(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(NETHERITE_HORSE_ARMOR.get());
         }
     }
@@ -56,10 +61,12 @@ public class NetheriteHorseArmor {
     public static class Configuration {
         public static ForgeConfigSpec COMMON;
         public static ForgeConfigSpec.IntValue WEIGHT;
+        public static ForgeConfigSpec.IntValue PROTECTION_VALUE;
 
         static {
             ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-            WEIGHT = BUILDER.comment("How much weight you want your horse armor to be in the loot table (bastion treasure) ? Set to 0 to disable. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
+            WEIGHT = BUILDER.comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Set to 0 to disable loot generation. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
+            PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
             COMMON = BUILDER.build();
         }
     }
