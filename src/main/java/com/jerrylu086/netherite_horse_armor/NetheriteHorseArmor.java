@@ -22,11 +22,9 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -39,7 +37,12 @@ public class NetheriteHorseArmor {
 
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
             new HorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
-                    new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_MISC).fireResistant()));
+                    new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_MISC).fireResistant()){
+                @Override
+                public int getProtection() {
+                    return Configuration.PROTECTION_VALUE.get();
+                }
+            });
 
     public NetheriteHorseArmor() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -53,10 +56,12 @@ public class NetheriteHorseArmor {
     public static class Configuration {
         public static ForgeConfigSpec COMMON;
         public static ForgeConfigSpec.IntValue WEIGHT;
+        public static ForgeConfigSpec.IntValue PROTECTION_VALUE;
 
         static {
             ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-            WEIGHT = BUILDER.comment("How much weight you want your horse armor to be in the loot table (bastion treasure) ? Set to 0 to disable. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
+            WEIGHT = BUILDER.comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Set to 0 to disable loot generation. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
+            PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
             COMMON = BUILDER.build();
         }
     }
