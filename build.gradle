@@ -24,7 +24,7 @@ mixin {
 
 version = "${mod_version}"
 group = 'com.jerrylu086.netherite_horse_armor'
-archivesBaseName = 'netherite_horse_armor'
+archivesBaseName = 'netherite_horse_armor-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
