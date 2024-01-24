@@ -98,11 +98,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title": project.name,
-                "Specification-Vendor": "jerrylu086",
+                "Specification-Vendor": "JerryLu086",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
                 "Implementation-Version": project.jar.archiveVersion,
-                "Implementation-Vendor": "jerrylu086",
+                "Implementation-Vendor": "JerryLu086",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "netherite_horse_armor.mixins.json"
         ])
