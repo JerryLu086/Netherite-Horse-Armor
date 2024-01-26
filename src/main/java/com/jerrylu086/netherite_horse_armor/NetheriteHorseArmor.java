@@ -3,9 +3,7 @@ package com.jerrylu086.netherite_horse_armor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableAccessor;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -54,7 +52,11 @@ public class NetheriteHorseArmor {
 
     private void addToTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-            event.accept(NETHERITE_HORSE_ARMOR.get());
+            event.getEntries().putAfter(
+                    new ItemStack(Items.DIAMOND_HORSE_ARMOR),
+                    new ItemStack(NETHERITE_HORSE_ARMOR.get()),
+                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
+            );
         }
     }
 
