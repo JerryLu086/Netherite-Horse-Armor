@@ -81,6 +81,8 @@ public class NetheriteHorseArmor {
 
             newEntries[entries.length] = entry;
             ((LootPoolAccessor)firstPool).setEntries(newEntries);
+
+            LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
         }
     }
 }
