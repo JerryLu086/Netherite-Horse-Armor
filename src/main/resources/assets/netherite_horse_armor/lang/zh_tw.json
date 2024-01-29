@@ -2,5 +2,9 @@
   "item.netherite_horse_armor.netherite_horse_armor": "獄髓製馬鎧",
 
   "netherite_horse_armor.advancements.obtain.title": "傳說黑騎士",
-  "netherite_horse_armor.advancements.obtain.description": "取得獄髓製馬鎧"
+  "netherite_horse_armor.advancements.obtain.description": "取得獄髓製馬鎧",
+
+  "text.autoconfig.netherite_horse_armor.option.title": "獄髓馬鎧模組 - 設定",
+  "text.autoconfig.netherite_horse_armor.option.weight": "戰利品表權重",
+  "text.autoconfig.netherite_horse_armor.option.protectionValue": "護甲值"
 }

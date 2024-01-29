@@ -9,7 +9,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +17,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,20 +52,20 @@ public class NetheriteHorseArmor implements ModInitializer {
 
 		Registry.register(Registry.ITEM, asResource( "netherite_horse_armor"), NETHERITE_HORSE_ARMOR);
 
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
 			if(!id.equals(BuiltInLootTables.BASTION_TREASURE))
 				return;
 
-			List<LootPool> pools = ((LootTableBuilderAccessor) tableBuilder).getPools();
-			LootPoolEntryContainer entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR)
+			var pools = ((LootTableBuilderAccessor) tableBuilder).getPools();
+			var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR)
 					.setWeight(clothConfigLoaded ? ClothConfigHandler.getInstance().weight : 8)
 					.setQuality(1).build();
 
 			if (pools != null && !pools.isEmpty()) {
-				LootPool firstPool = pools.get(0);
-				LootPoolEntryContainer[] entries = ((LootPoolAccessor)firstPool).getEntries();
+				var firstPool = pools.get(0);
+				var entries = ((LootPoolAccessor)firstPool).getEntries();
 
-				LootPoolEntryContainer[] newEntries = new LootPoolEntryContainer[entries.length + 1];
+				var newEntries = new LootPoolEntryContainer[entries.length + 1];
 				System.arraycopy(entries, 0, newEntries, 0, entries.length);
 
 				newEntries[entries.length] = entry;
