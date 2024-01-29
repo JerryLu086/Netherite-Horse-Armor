@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "netherite_horse_armor",
+	"version": "${version}",
+	"name": "Netherite Horse Armor",
+	"description": "A new horse armor for you to collect!",
+	"authors": [
+		"JerryLu086"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/simple-netherite-horse-armor",
+		"sources": "https://github.com/JerryLu086/Netherite-Horse-Armor",
+		"issues": "https://github.com/JerryLu086/Netherite-Horse-Armor/issues"
+	},
+	"license": "MIT",
+	"icon": "icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor"
+		],
+		"modmenu": [
+			"com.jerrylu086.netherite_horse_armor.config.ModMenuScreen"
+		]
+	},
+	"mixins": [
+		"netherite_horse_armor.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.12.0"
+	}
+}
