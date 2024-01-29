@@ -75,7 +75,9 @@ public class NetheriteHorseArmor {
         LootEntry entry = ItemLootEntry.lootTableItem(NETHERITE_HORSE_ARMOR.get()).setWeight(Configuration.WEIGHT.get()).setQuality(1).build();
         List<LootPool> pools = ((LootTableAccessor)event.getTable()).getPools();
 
-        if (pools != null && !pools.isEmpty())
+        if (pools != null && !pools.isEmpty()) {
             ((LootPoolAccessor)pools.get(0)).getEntries().add(entry);
+            LOGGER.info("Successfully modified loot table: '{}'", LootTables.BASTION_TREASURE);
+        }
     }
 }
