@@ -1,5 +1,6 @@
 package com.jerrylu086.netherite_horse_armor;
 
+import com.google.common.collect.ImmutableList;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -7,19 +8,17 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,9 +28,9 @@ public class NetheriteHorseArmor {
     public static final String MOD_ID = "netherite_horse_armor";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
 
-    public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
+    public static final DeferredItem<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
             new HorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
                     new Item.Properties().stacksTo(1).fireResistant()) {
                 @Override
@@ -40,14 +39,12 @@ public class NetheriteHorseArmor {
                 }
             });
 
-    public NetheriteHorseArmor() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public NetheriteHorseArmor(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
         modEventBus.addListener(this::addToTab);
 
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
 
     private void addToTab(BuildCreativeModeTabContentsEvent event) {
@@ -61,12 +58,12 @@ public class NetheriteHorseArmor {
     }
 
     public static class Configuration {
-        public static ForgeConfigSpec COMMON;
-        public static ForgeConfigSpec.IntValue WEIGHT;
-        public static ForgeConfigSpec.IntValue PROTECTION_VALUE;
+        public static ModConfigSpec COMMON;
+        public static ModConfigSpec.IntValue WEIGHT;
+        public static ModConfigSpec.IntValue PROTECTION_VALUE;
 
         static {
-            ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+            ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
             WEIGHT = BUILDER.comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Requires /reload command to work if changed in game. Set to 0 to disable loot generation. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
             PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
             COMMON = BUILDER.build();
@@ -86,10 +83,8 @@ public class NetheriteHorseArmor {
             var firstPool = pools.get(0);
             var entries = ((LootPoolAccessor)firstPool).getEntries();
 
-            var newEntries = new LootPoolEntryContainer[entries.length + 1];
-            System.arraycopy(entries, 0, newEntries, 0, entries.length);
-
-            newEntries[entries.length] = entry;
+            ImmutableList<LootPoolEntryContainer> newEntries =
+                    ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
             ((LootPoolAccessor)firstPool).setEntries(newEntries);
 
             LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
