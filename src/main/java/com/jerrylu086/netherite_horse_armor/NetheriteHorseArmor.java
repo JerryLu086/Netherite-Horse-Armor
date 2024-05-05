@@ -3,6 +3,7 @@ package com.jerrylu086.netherite_horse_armor;
 import com.google.common.collect.ImmutableList;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableAccessor;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -15,35 +16,41 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 @Mod(NetheriteHorseArmor.MOD_ID)
 public class NetheriteHorseArmor {
     public static final String MOD_ID = "netherite_horse_armor";
-    // public static final Logger LOGGER = LoggerFactory.getLogger(NetheriteHorseArmor.class);
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
+    public static final DeferredRegister<MapCodec<? extends ICondition>> CODECS = DeferredRegister.create(NeoForgeRegistries.CONDITION_SERIALIZERS, MOD_ID);
 
     public static final DeferredItem<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
             new AnimalArmorItem(ArmorMaterials.NETHERITE, AnimalArmorItem.BodyType.EQUESTRIAN, false,
                     new Item.Properties().stacksTo(1).fireResistant()) {
-                @Override
-                public int getDefense() {
-                    return Configuration.PROTECTION_VALUE.get();
-                }
-
                 @Override
                 public ResourceLocation getTexture() {
                     return new ResourceLocation(MOD_ID, super.getTexture().getPath());
                 }
             });
 
+    public static final Supplier<MapCodec<? extends ICondition>> EASY_CRAFTING = CODECS.register("easy_crafting", () -> EasyCraftingCondition.CODEC);
+
     public NetheriteHorseArmor(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
+        CODECS.register(modEventBus);
+
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
         modEventBus.addListener(this::addToTab);
 
@@ -63,13 +70,34 @@ public class NetheriteHorseArmor {
     public static class Configuration {
         public static ModConfigSpec COMMON;
         public static ModConfigSpec.IntValue WEIGHT;
-        public static ModConfigSpec.IntValue PROTECTION_VALUE;
+        public static ModConfigSpec.BooleanValue EASY_CRAFTING;
+
+        // No longer used, since Vanilla made this an attribute modifier thing ;-;
+        // It now has 3 armor thoughness and 1 KB resistance though, which isn't too bad.
+
+        // public static ModConfigSpec.IntValue PROTECTION_VALUE;
 
         static {
             ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
             WEIGHT = BUILDER.comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Requires /reload command to work if changed in game. Set to 0 to disable loot generation. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
-            PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
+            EASY_CRAFTING = BUILDER.comment("You might want to make your netherite horse armor a bit easier to get.").define("easyCrafting", false);
+            // PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
             COMMON = BUILDER.build();
+        }
+    }
+
+    // Yoink'd from my lovely Rose Gold project
+    public static class EasyCraftingCondition implements ICondition {
+        public static final MapCodec<EasyCraftingCondition> CODEC = MapCodec.unit(new EasyCraftingCondition());
+
+        @Override
+        public boolean test(IContext context) {
+            return Configuration.EASY_CRAFTING.get();
+        }
+
+        @Override
+        public MapCodec<? extends ICondition> codec() {
+            return CODEC;
         }
     }
 
@@ -90,8 +118,7 @@ public class NetheriteHorseArmor {
                     ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
             ((LootPoolAccessor)firstPool).setEntries(newEntries);
 
-            // Okay, the logger somehow broke. Let's wait for it to fix itself.
-            // LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE.location());
+            LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE.location());
         }
     }
 }
