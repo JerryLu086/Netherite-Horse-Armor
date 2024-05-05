@@ -19,29 +19,32 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
 @Mod(NetheriteHorseArmor.MOD_ID)
 public class NetheriteHorseArmor {
     public static final String MOD_ID = "netherite_horse_armor";
-    public static final Logger LOGGER = LogManager.getLogger();
+    // public static final Logger LOGGER = LoggerFactory.getLogger(NetheriteHorseArmor.class);
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
 
     public static final DeferredItem<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
-            new HorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
+            new AnimalArmorItem(ArmorMaterials.NETHERITE, AnimalArmorItem.BodyType.EQUESTRIAN, false,
                     new Item.Properties().stacksTo(1).fireResistant()) {
                 @Override
-                public int getProtection() {
+                public int getDefense() {
                     return Configuration.PROTECTION_VALUE.get();
+                }
+
+                @Override
+                public ResourceLocation getTexture() {
+                    return new ResourceLocation(MOD_ID, super.getTexture().getPath());
                 }
             });
 
     public NetheriteHorseArmor(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
         modEventBus.addListener(this::addToTab);
 
         NeoForge.EVENT_BUS.register(this);
@@ -73,7 +76,7 @@ public class NetheriteHorseArmor {
     // From Quark mod by Team Violet Moon. GitHub: https://github.com/VazkiiMods/Quark/blob/master/src/main/java/vazkii/quark/content/tools/module/ColorRunesModule.java#L177
     @SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
-        if(!(event.getName().equals(BuiltInLootTables.BASTION_TREASURE) && Configuration.WEIGHT.get() > 0))
+        if(!(event.getName().equals(BuiltInLootTables.BASTION_TREASURE.location()) && Configuration.WEIGHT.get() > 0))
             return;
 
         var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR.get()).setWeight(Configuration.WEIGHT.get()).setQuality(1).build();
@@ -87,7 +90,8 @@ public class NetheriteHorseArmor {
                     ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
             ((LootPoolAccessor)firstPool).setEntries(newEntries);
 
-            LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
+            // Okay, the logger somehow broke. Let's wait for it to fix itself.
+            // LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE.location());
         }
     }
 }
