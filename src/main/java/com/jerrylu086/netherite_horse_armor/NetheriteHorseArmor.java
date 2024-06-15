@@ -1,5 +1,6 @@
 package com.jerrylu086.netherite_horse_armor;
 
+import com.google.common.collect.ImmutableList;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler.ModConfig;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
@@ -61,20 +62,19 @@ public class NetheriteHorseArmor implements ModInitializer {
 			if(!id.equals(BuiltInLootTables.BASTION_TREASURE))
 				return;
 
-			var pools = ((LootTableBuilderAccessor) tableBuilder).getPools();
+			var extractedPools = ((LootTableBuilderAccessor) tableBuilder).getPools().build();
 			var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR)
 					.setWeight(clothConfigLoaded ? ClothConfigHandler.getInstance().weight : 8)
 					.setQuality(1).build();
 
-			if (pools != null && !pools.isEmpty()) {
-				var firstPool = pools.get(0);
+			if (extractedPools != null && !extractedPools.isEmpty()) {
+				var firstPool = extractedPools.get(0);
 				var entries = ((LootPoolAccessor)firstPool).getEntries();
 
-				var newEntries = new LootPoolEntryContainer[entries.length + 1];
-				System.arraycopy(entries, 0, newEntries, 0, entries.length);
-
-				newEntries[entries.length] = entry;
+				ImmutableList<LootPoolEntryContainer> newEntries =
+						ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
 				((LootPoolAccessor)firstPool).setEntries(newEntries);
+				((LootTableBuilderAccessor) tableBuilder).setPools((new ImmutableList.Builder()).addAll(extractedPools));
 
 				LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
 			}
