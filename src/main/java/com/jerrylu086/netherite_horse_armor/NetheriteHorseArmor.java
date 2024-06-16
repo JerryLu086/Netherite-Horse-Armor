@@ -9,17 +9,13 @@ import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableBuilderAcces
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -33,17 +29,11 @@ public class NetheriteHorseArmor implements ModInitializer {
 
 	private static boolean clothConfigLoaded;
 
-	public static final Item NETHERITE_HORSE_ARMOR = new HorseArmorItem(13, "netherite",
-			new FabricItemSettings().stacksTo(1).fireResistant()) {
-
+	public static final Item NETHERITE_HORSE_ARMOR = new AnimalArmorItem(ArmorMaterials.NETHERITE,
+			AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1).fireResistant()) {
 		@Override
 		public ResourceLocation getTexture() {
 			return asResource("textures/entity/horse/armor/horse_armor_netherite.png");
-		}
-
-		@Override
-		public int getProtection() {
-			return clothConfigLoaded ? ClothConfigHandler.getInstance().protectionValue : 13;
 		}
 	};
 
@@ -58,8 +48,8 @@ public class NetheriteHorseArmor implements ModInitializer {
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT)
 				.register((entries) -> entries.addAfter(Items.DIAMOND_HORSE_ARMOR, NETHERITE_HORSE_ARMOR));
 
-		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-			if(!id.equals(BuiltInLootTables.BASTION_TREASURE))
+		LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
+			if(!key.equals(BuiltInLootTables.BASTION_TREASURE))
 				return;
 
 			var extractedPools = ((LootTableBuilderAccessor) tableBuilder).getPools().build();

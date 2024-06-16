@@ -21,8 +21,5 @@ public class ClothConfigHandler {
         @Comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Requires /reload command to work if changed in game. Set to 0 to disable loot generation. (default: 8)")
         public int weight = 8;
 
-        @Comment("The armor points you want for the netherite horse armor. (default: 13)")
-        public int protectionValue = 13;
-
     }
 }
