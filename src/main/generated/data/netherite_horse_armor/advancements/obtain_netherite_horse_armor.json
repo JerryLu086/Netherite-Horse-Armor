@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "netherite_horse_armor:netherite_horse_armor"
-            ]
+            "items": "netherite_horse_armor:netherite_horse_armor"
           }
         ]
       },
@@ -15,16 +13,15 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "netherite_horse_armor.advancements.obtain.description"
     },
     "frame": "challenge",
-    "hidden": false,
+    "hidden": true,
     "icon": {
-      "item": "netherite_horse_armor:netherite_horse_armor"
+      "count": 1,
+      "id": "netherite_horse_armor:netherite_horse_armor"
     },
-    "show_toast": true,
     "title": {
       "translate": "netherite_horse_armor.advancements.obtain.title"
     }
@@ -34,7 +31,5 @@
       "netherite_horse_armor"
     ]
   ],
-  "rewards": {
-    "experience": 50
-  }
+  "sends_telemetry_event": true
 }

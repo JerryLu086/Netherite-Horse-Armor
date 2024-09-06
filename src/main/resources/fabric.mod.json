@@ -19,6 +19,9 @@
 		"main": [
 			"com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor"
 		],
+		"fabric-datagen": [
+			"com.jerrylu086.netherite_horse_armor.data.ModDatagen"
+		],
 		"modmenu": [
 			"com.jerrylu086.netherite_horse_armor.config.ModMenuScreen"
 		]
@@ -27,6 +30,12 @@
 		"netherite_horse_armor.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.12.0"
+		"fabricloader": ">=0.16.4",
+		"minecraft": "~1.20.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
 	}
 }
