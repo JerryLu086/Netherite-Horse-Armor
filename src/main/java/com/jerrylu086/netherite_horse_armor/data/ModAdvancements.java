@@ -33,6 +33,6 @@ public class ModAdvancements implements AdvancementGenerator {
     }
 
     protected static AdvancementHolder getAdvancement(String path) {
-        return Advancement.Builder.advancement().build(new ResourceLocation(path));
+        return Advancement.Builder.advancement().build(ResourceLocation.parse(path));
     }
 }

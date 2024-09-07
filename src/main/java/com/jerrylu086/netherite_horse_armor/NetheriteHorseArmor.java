@@ -41,7 +41,7 @@ public class NetheriteHorseArmor {
                     new Item.Properties().stacksTo(1).fireResistant()) {
                 @Override
                 public ResourceLocation getTexture() {
-                    return new ResourceLocation(MOD_ID, super.getTexture().getPath());
+                    return ResourceLocation.fromNamespaceAndPath(MOD_ID, super.getTexture().getPath());
                 }
             });
 
@@ -59,7 +59,7 @@ public class NetheriteHorseArmor {
 
     private void addToTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-            event.getEntries().putAfter(
+            event.insertAfter(
                     new ItemStack(Items.DIAMOND_HORSE_ARMOR),
                     new ItemStack(NETHERITE_HORSE_ARMOR.get()),
                     CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS

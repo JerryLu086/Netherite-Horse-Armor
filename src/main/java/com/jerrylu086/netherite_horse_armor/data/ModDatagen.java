@@ -13,12 +13,15 @@ import java.util.List;
 public class ModDatagen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        boolean server = event.includeServer();
+        var generator = event.getGenerator();
+        var server = event.includeServer();
+        var output = generator.getPackOutput();
+        var registries = event.getLookupProvider();
+        var helper = event.getExistingFileHelper();
 
-        event.getGenerator().addProvider(server, new AdvancementProvider(
-                output, event.getLookupProvider(), event.getExistingFileHelper(), List.of(new ModAdvancements()))
+        generator.addProvider(server, new ModRecipes(output, registries));
+        generator.addProvider(server, new AdvancementProvider(
+                output, registries, helper, List.of(new ModAdvancements()))
         );
     }
 }
