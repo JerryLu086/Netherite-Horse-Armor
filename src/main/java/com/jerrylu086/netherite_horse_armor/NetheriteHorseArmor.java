@@ -3,6 +3,7 @@ package com.jerrylu086.netherite_horse_armor;
 import com.google.common.collect.ImmutableList;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler.ModConfig;
+import com.jerrylu086.netherite_horse_armor.data.AnimalArmorItem;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableBuilderAccessor;
 
@@ -16,6 +17,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
