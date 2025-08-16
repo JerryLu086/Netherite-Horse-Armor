@@ -1,14 +1,17 @@
 package com.jerrylu086.netherite_horse_armor;
 
+import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
+import com.jerrylu086.netherite_horse_armor.items.NetheriteHorseArmorItem;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableAccessor;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,29 +19,24 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 @SuppressWarnings("unused")
 @Mod(NetheriteHorseArmor.MOD_ID)
 public class NetheriteHorseArmor {
     public static final String MOD_ID = "netherite_horse_armor";
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
-            new HorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
-                    new Item.Properties().stacksTo(1).fireResistant()) {
-                @Override
-                public int getProtection() {
-                    return Configuration.PROTECTION_VALUE.get();
-                }
-            });
+            new NetheriteHorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
+                    new Item.Properties().stacksTo(1).fireResistant()));
 
     public NetheriteHorseArmor() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -50,6 +48,10 @@ public class NetheriteHorseArmor {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    private void setup(final FMLCommonSetupEvent event) {
+        CraftingHelper.register(new EasyCraftingCondition.Serializer());
+    }
+
     private void addToTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.getEntries().putAfter(
@@ -57,19 +59,6 @@ public class NetheriteHorseArmor {
                     new ItemStack(NETHERITE_HORSE_ARMOR.get()),
                     CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
             );
-        }
-    }
-
-    public static class Configuration {
-        public static ForgeConfigSpec COMMON;
-        public static ForgeConfigSpec.IntValue WEIGHT;
-        public static ForgeConfigSpec.IntValue PROTECTION_VALUE;
-
-        static {
-            ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-            WEIGHT = BUILDER.comment("The weight you want the netherite horse armor to be in the loot table (bastion treasure). Requires /reload command to work if changed in game. Set to 0 to disable loot generation. (default: 8)").defineInRange("weight", 8, 0, Integer.MAX_VALUE);
-            PROTECTION_VALUE = BUILDER.comment("The armor points you want for the netherite horse armor. (default: 13)").defineInRange("protectionValue", 13, 1, 30);
-            COMMON = BUILDER.build();
         }
     }
 
