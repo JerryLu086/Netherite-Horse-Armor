@@ -41,6 +41,8 @@ public class NetheriteHorseArmor {
     public NetheriteHorseArmor() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        modEventBus.addListener(this::setup);
+
         ITEMS.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
         modEventBus.addListener(this::addToTab);
