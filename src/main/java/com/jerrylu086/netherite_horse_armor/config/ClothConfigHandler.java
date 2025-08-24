@@ -24,5 +24,8 @@ public class ClothConfigHandler {
         @Comment("The armor points you want for the netherite horse armor. (default: 13)")
         public int protectionValue = 13;
 
+        @Comment("Whether you can upgrade a diamond horse armor into a netherite one with smithing table. (default: false)")
+        public boolean easyCrafting = false;
+
     }
 }
