@@ -20,7 +20,7 @@
       "translate": "netherite_horse_armor.advancements.obtain.description"
     },
     "frame": "challenge",
-    "hidden": false,
+    "hidden": true,
     "icon": {
       "item": "netherite_horse_armor:netherite_horse_armor"
     },
@@ -34,7 +34,5 @@
       "netherite_horse_armor"
     ]
   ],
-  "rewards": {
-    "experience": 50
-  }
+  "sends_telemetry_event": true
 }

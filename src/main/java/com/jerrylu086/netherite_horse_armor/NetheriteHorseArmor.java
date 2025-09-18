@@ -1,5 +1,6 @@
 package com.jerrylu086.netherite_horse_armor;
 
+import com.google.gson.JsonObject;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler.ModConfig;
 import com.jerrylu086.netherite_horse_armor.items.NetheriteHorseArmorItem;
@@ -12,6 +13,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
@@ -35,6 +37,16 @@ public class NetheriteHorseArmor implements ModInitializer {
 
 	public static final Item NETHERITE_HORSE_ARMOR = new NetheriteHorseArmorItem(13, "netherite",
 			new FabricItemSettings().stacksTo(1).fireResistant());
+
+	public static final ConditionJsonProvider EASY_CRAFTING = new ConditionJsonProvider() {
+		@Override
+		public void writeParameters(JsonObject object) {}
+
+		@Override
+		public ResourceLocation getConditionId() {
+			return asResource("easy_crafting");
+		}
+	};
 
 	@Override
 	public void onInitialize() {
