@@ -9,11 +9,12 @@ import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 
 // A very useful copy-paste class lol
 public class EasyCraftingCondition implements ICondition {
-    private static final ResourceLocation NAME = new ResourceLocation(NetheriteHorseArmor.MOD_ID, "easy_crafting");
+    private static final ResourceLocation ID = new ResourceLocation(NetheriteHorseArmor.MOD_ID, "easy_crafting");
+    public static final EasyCraftingCondition INSTANCE = new EasyCraftingCondition();
 
     @Override
     public ResourceLocation getID() {
-        return NAME;
+        return ID;
     }
 
     @Override
@@ -22,6 +23,8 @@ public class EasyCraftingCondition implements ICondition {
     }
 
     public static class Serializer implements IConditionSerializer<EasyCraftingCondition> {
+        public static final Serializer INSTANCE = new Serializer();
+
         @Override
         public void write(JsonObject json, EasyCraftingCondition value) {
             // Yeah boi
@@ -34,7 +37,7 @@ public class EasyCraftingCondition implements ICondition {
 
         @Override
         public ResourceLocation getID() {
-            return EasyCraftingCondition.NAME;
+            return EasyCraftingCondition.ID;
         }
     }
 }

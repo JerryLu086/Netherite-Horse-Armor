@@ -23,6 +23,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
@@ -35,13 +36,13 @@ public class NetheriteHorseArmor {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor", () ->
-            new NetheriteHorseArmorItem(13, new ResourceLocation(MOD_ID, "textures/entity/horse/armor/horse_armor_netherite.png"),
+            new NetheriteHorseArmorItem(13, asResource("textures/entity/horse/armor/horse_armor_netherite.png"),
                     new Item.Properties().stacksTo(1).fireResistant()));
 
     public NetheriteHorseArmor() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::registerEvent);
 
         ITEMS.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON);
@@ -50,8 +51,10 @@ public class NetheriteHorseArmor {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        CraftingHelper.register(new EasyCraftingCondition.Serializer());
+    private void registerEvent(RegisterEvent event) {
+        if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+            CraftingHelper.register(EasyCraftingCondition.Serializer.INSTANCE);
+        }
     }
 
     private void addToTab(BuildCreativeModeTabContentsEvent event) {
@@ -85,5 +88,9 @@ public class NetheriteHorseArmor {
 
             LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
         }
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }
