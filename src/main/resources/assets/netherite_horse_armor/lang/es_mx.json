@@ -1,0 +1,10 @@
+{
+  "item.netherite_horse_armor.netherite_horse_armor": "Armadura de caballo de netherita",
+
+  "netherite_horse_armor.advancements.obtain.title": "El legendario Caballero Oscuro",
+  "netherite_horse_armor.advancements.obtain.description": "Obtén una armadura de caballo de netherita",
+
+  "text.autoconfig.netherite_horse_armor.option.title": "Configuración de Armadura de Caballo de Netherita",
+  "text.autoconfig.netherite_horse_armor.option.weight": "Peso en la Tabla de Botín",
+  "text.autoconfig.netherite_horse_armor.option.protectionValue": "Puntos de Armadura"
+}

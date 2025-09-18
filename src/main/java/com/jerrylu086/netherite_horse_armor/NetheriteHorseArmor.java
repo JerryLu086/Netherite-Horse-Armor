@@ -1,16 +1,18 @@
 package com.jerrylu086.netherite_horse_armor;
 
-import com.google.common.collect.ImmutableList;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler.ModConfig;
+import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableBuilderAccessor;
 
+import com.google.common.collect.ImmutableList;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,7 +29,7 @@ public class NetheriteHorseArmor implements ModInitializer {
 	public static final String MOD_ID = "netherite_horse_armor";
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private static boolean clothConfigLoaded;
+	public static boolean clothConfigLoaded;
 
 	public static final Item NETHERITE_HORSE_ARMOR = new AnimalArmorItem(ArmorMaterials.NETHERITE,
 			AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1).fireResistant()) {
@@ -44,32 +46,36 @@ public class NetheriteHorseArmor implements ModInitializer {
 			AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
 		}
 
+		ResourceConditions.register(EasyCraftingCondition.TYPE);
+
 		Registry.register(BuiltInRegistries.ITEM, asResource( "netherite_horse_armor"), NETHERITE_HORSE_ARMOR);
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT)
 				.register((entries) -> entries.addAfter(Items.DIAMOND_HORSE_ARMOR, NETHERITE_HORSE_ARMOR));
 
-		LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
-			if(!key.equals(BuiltInLootTables.BASTION_TREASURE))
-				return;
-
-			var extractedPools = ((LootTableBuilderAccessor) tableBuilder).getPools().build();
-			var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR)
-					.setWeight(clothConfigLoaded ? ClothConfigHandler.getInstance().weight : 8)
-					.setQuality(1).build();
-
-			if (extractedPools != null && !extractedPools.isEmpty()) {
-				var firstPool = extractedPools.get(0);
-				var entries = ((LootPoolAccessor)firstPool).getEntries();
-
-				ImmutableList<LootPoolEntryContainer> newEntries =
-						ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
-				((LootPoolAccessor)firstPool).setEntries(newEntries);
-				((LootTableBuilderAccessor) tableBuilder).setPools((new ImmutableList.Builder()).addAll(extractedPools));
-
-				LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
-			}
-		});
+		LootTableEvents.MODIFY.register(LOOT_MODIFICATION);
 	}
+
+	private static final LootTableEvents.Modify LOOT_MODIFICATION = (key, tableBuilder, source, registries) -> {
+		if(!key.equals(BuiltInLootTables.BASTION_TREASURE))
+			return;
+
+		var extractedPools = ((LootTableBuilderAccessor) tableBuilder).getPools().build();
+		var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR)
+				.setWeight(clothConfigLoaded ? ClothConfigHandler.getInstance().weight : 8)
+				.setQuality(1).build();
+
+		if (extractedPools != null && !extractedPools.isEmpty()) {
+			var firstPool = extractedPools.get(0);
+			var entries = ((LootPoolAccessor)firstPool).getEntries();
+
+			ImmutableList<LootPoolEntryContainer> newEntries =
+					ImmutableList.<LootPoolEntryContainer>builder().addAll(entries).add(entry).build();
+			((LootPoolAccessor)firstPool).setEntries(newEntries);
+			((LootTableBuilderAccessor) tableBuilder).setPools((new ImmutableList.Builder()).addAll(extractedPools));
+
+			LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
+		}
+	};
 
 	public static ResourceLocation asResource(String path) {
 		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);

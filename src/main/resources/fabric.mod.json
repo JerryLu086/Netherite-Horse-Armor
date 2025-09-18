@@ -30,12 +30,9 @@
 		"netherite_horse_armor.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.4",
-		"minecraft": "~1.21",
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
