@@ -6,5 +6,6 @@
 
   "text.autoconfig.netherite_horse_armor.option.title": "獄髓馬鎧模組 - 設定",
   "text.autoconfig.netherite_horse_armor.option.weight": "戰利品表權重",
-  "text.autoconfig.netherite_horse_armor.option.protectionValue": "盔甲值"
+  "text.autoconfig.netherite_horse_armor.option.protectionValue": "盔甲值",
+  "text.autoconfig.netherite_horse_armor.option.easyCrafting": "簡易合成"
 }

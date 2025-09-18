@@ -6,5 +6,6 @@
 
   "text.autoconfig.netherite_horse_armor.option.title": "Netherite Horse Armor Config",
   "text.autoconfig.netherite_horse_armor.option.weight": "Weight in Loot Table",
-  "text.autoconfig.netherite_horse_armor.option.protectionValue": "Armor Points"
+  "text.autoconfig.netherite_horse_armor.option.protectionValue": "Armor Points",
+  "text.autoconfig.netherite_horse_armor.option.easyCrafting": "Easy Crafting"
 }

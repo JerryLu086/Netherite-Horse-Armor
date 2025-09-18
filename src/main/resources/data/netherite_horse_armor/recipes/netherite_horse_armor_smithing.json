@@ -12,9 +12,9 @@
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"
   },
-  "conditions": [
+  "fabric:load_conditions": [
     {
-      "type": "netherite_horse_armor:easy_crafting"
+      "condition": "netherite_horse_armor:easy_crafting"
     }
   ]
 }
