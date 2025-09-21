@@ -5,6 +5,7 @@ import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -17,6 +18,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -36,6 +39,8 @@ public class ModDatagen {
 
         gen.addProvider(event.includeServer(), new ModRecipeProvider(output, registries));
         gen.addProvider(event.includeServer(), new ModAdvancementProvider(output, registries, helper));
+
+        gen.addProvider(event.includeClient(), new ModItemModelProvider(output, helper));
     }
 
     static class ModRecipeProvider extends RecipeProvider {
@@ -78,9 +83,27 @@ public class ModDatagen {
                         .save(consumer, NetheriteHorseArmor.MOD_ID + ":obtain_netherite_horse_armor");
             }));
         }
+
+        static AdvancementHolder getAdvancement(String path) {
+            return Advancement.Builder.advancement().build(ResourceLocation.parse(path));
+        }
     }
 
-    static AdvancementHolder getAdvancement(String path) {
-        return Advancement.Builder.advancement().build(ResourceLocation.parse(path));
+    static class ModItemModelProvider extends ItemModelProvider {
+        private static final String GENERATED = "item/generated";
+
+        public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+            super(output, NetheriteHorseArmor.MOD_ID, existingFileHelper);
+        }
+
+        @Override
+        protected void registerModels() {
+            generateFlatItem(NetheriteHorseArmor.NETHERITE_HORSE_ARMOR.get());
+        }
+
+        protected ItemModelBuilder generateFlatItem(Item item) {
+            var path = BuiltInRegistries.ITEM.getKey(item).getPath();
+            return withExistingParent(path, GENERATED).texture("layer0", "item/" + path);
+        }
     }
 }
