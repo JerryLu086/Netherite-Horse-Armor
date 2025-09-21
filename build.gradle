@@ -25,13 +25,6 @@ base {
     archivesName = project.archives_base_name
 }
 
-java {
-    withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 sourceSets {
     datagen {
         compileClasspath += main.compileClasspath
@@ -39,6 +32,13 @@ sourceSets {
         compileClasspath += main.output
         runtimeClasspath += main.output
     }
+}
+
+java {
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 legacyForge {
