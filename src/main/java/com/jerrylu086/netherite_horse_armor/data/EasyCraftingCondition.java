@@ -2,6 +2,7 @@ package com.jerrylu086.netherite_horse_armor.data;
 
 import com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
+
 import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;

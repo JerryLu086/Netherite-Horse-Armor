@@ -1,6 +1,6 @@
-package com.jerrylu086.netherite_horse_armor.data;
+package com.jerrylu086.netherite_horse_armor;
 
-import com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor;
+import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;

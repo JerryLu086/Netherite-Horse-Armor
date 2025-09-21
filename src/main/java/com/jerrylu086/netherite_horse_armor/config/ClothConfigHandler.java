@@ -1,6 +1,7 @@
 package com.jerrylu086.netherite_horse_armor.config;
 
 import com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor;
+
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
