@@ -10,14 +10,40 @@ base {
 	archivesName = project.archives_base_name
 }
 
+sourceSets {
+	datagen {
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
+
+loom {
+	runs {
+		datagen {
+			client()
+
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+			runDir "build/datagen"
+
+			source sourceSets.datagen
+		}
+	}
+}
+
+runDatagen {
+	// Doesn't re-run the task when its up-to date
+	outputs.dir('src/main/generated')
+}
+
 repositories {
 	maven { url "https://maven.parchmentmc.org" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
-}
-
-fabricApi {
-	configureDataGeneration()
 }
 
 dependencies {
@@ -62,10 +88,6 @@ java {
 
 jar {
 	inputs.property "archivesName", project.base.archivesName
-
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
-	}
 }
 
 // configure the maven publication

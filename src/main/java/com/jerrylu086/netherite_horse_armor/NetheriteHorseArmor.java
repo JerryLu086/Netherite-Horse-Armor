@@ -1,6 +1,5 @@
 package com.jerrylu086.netherite_horse_armor;
 
-import com.google.gson.JsonObject;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler;
 import com.jerrylu086.netherite_horse_armor.config.ClothConfigHandler.ModConfig;
 import com.jerrylu086.netherite_horse_armor.items.NetheriteHorseArmorItem;
@@ -26,6 +25,7 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
+import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

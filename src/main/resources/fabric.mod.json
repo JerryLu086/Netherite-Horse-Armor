@@ -20,7 +20,7 @@
 			"com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor"
 		],
 		"fabric-datagen": [
-			"com.jerrylu086.netherite_horse_armor.data.ModDatagen"
+			"com.jerrylu086.netherite_horse_armor.ModDatagen"
 		],
 		"modmenu": [
 			"com.jerrylu086.netherite_horse_armor.config.ModMenuScreen"
