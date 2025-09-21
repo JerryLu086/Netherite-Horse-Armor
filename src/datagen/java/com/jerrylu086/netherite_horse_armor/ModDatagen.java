@@ -4,10 +4,14 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.network.chat.Component;
@@ -24,6 +28,8 @@ public class ModDatagen implements DataGeneratorEntrypoint {
 
         pack.addProvider(ModRecipeProvider::new);
         pack.addProvider(ModAdvancementProvider::new);
+
+        pack.addProvider(ModItemModelProvider::new);
     }
 
     static class ModRecipeProvider extends FabricRecipeProvider {
@@ -62,6 +68,22 @@ public class ModDatagen implements DataGeneratorEntrypoint {
 
         static Advancement getAdvancement(String path) {
             return Advancement.Builder.advancement().build(new ResourceLocation(path));
+        }
+    }
+
+    static class ModItemModelProvider extends FabricModelProvider {
+        public ModItemModelProvider(FabricDataOutput output) {
+            super(output);
+        }
+
+        @Override
+        public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+
+        }
+
+        @Override
+        public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+            itemModelGenerator.generateFlatItem(NetheriteHorseArmor.NETHERITE_HORSE_ARMOR, ModelTemplates.FLAT_ITEM);
         }
     }
 }
