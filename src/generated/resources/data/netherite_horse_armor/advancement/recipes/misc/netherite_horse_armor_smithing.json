@@ -18,7 +18,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "netherite_horse_armor:netherite_horse_armor_easy_crafting"
+        "recipe": "netherite_horse_armor:netherite_horse_armor_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -31,7 +31,7 @@
   ],
   "rewards": {
     "recipes": [
-      "netherite_horse_armor:netherite_horse_armor_easy_crafting"
+      "netherite_horse_armor:netherite_horse_armor_smithing"
     ]
   }
 }
