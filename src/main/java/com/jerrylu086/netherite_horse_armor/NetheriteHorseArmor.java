@@ -4,6 +4,7 @@ import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 import com.jerrylu086.netherite_horse_armor.items.NetheriteHorseArmorItem;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootPoolAccessor;
 import com.jerrylu086.netherite_horse_armor.mixin.accessor.LootTableAccessor;
+
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -19,12 +20,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
+
 import org.slf4j.Logger;
 
 @SuppressWarnings("unused")
@@ -74,17 +75,17 @@ public class NetheriteHorseArmor {
             return;
 
         var entry = LootItem.lootTableItem(NETHERITE_HORSE_ARMOR.get()).setWeight(Configuration.WEIGHT.get()).setQuality(1).build();
-        var pools = ((LootTableAccessor)event.getTable()).getPools();
+        var pools = ((LootTableAccessor) event.getTable()).getPools();
 
         if (pools != null && !pools.isEmpty()) {
             var firstPool = pools.get(0);
-            var entries = ((LootPoolAccessor)firstPool).getEntries();
+            var entries = ((LootPoolAccessor) firstPool).getEntries();
 
             var newEntries = new LootPoolEntryContainer[entries.length + 1];
             System.arraycopy(entries, 0, newEntries, 0, entries.length);
 
             newEntries[entries.length] = entry;
-            ((LootPoolAccessor)firstPool).setEntries(newEntries);
+            ((LootPoolAccessor) firstPool).setEntries(newEntries);
 
             LOGGER.info("Successfully modified loot table: '{}'", BuiltInLootTables.BASTION_TREASURE);
         }

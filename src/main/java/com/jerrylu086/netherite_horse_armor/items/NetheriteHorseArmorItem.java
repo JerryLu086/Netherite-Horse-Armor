@@ -1,6 +1,7 @@
 package com.jerrylu086.netherite_horse_armor.items;
 
 import com.jerrylu086.netherite_horse_armor.Configuration;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.HorseArmorItem;
 

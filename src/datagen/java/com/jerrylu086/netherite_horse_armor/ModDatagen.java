@@ -1,6 +1,6 @@
-package com.jerrylu086.netherite_horse_armor.data;
+package com.jerrylu086.netherite_horse_armor;
 
-import com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor;
+import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -11,9 +11,6 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;

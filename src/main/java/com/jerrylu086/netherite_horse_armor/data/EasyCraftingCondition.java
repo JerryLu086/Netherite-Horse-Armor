@@ -1,11 +1,13 @@
 package com.jerrylu086.netherite_horse_armor.data;
 
-import com.google.gson.JsonObject;
 import com.jerrylu086.netherite_horse_armor.Configuration;
 import com.jerrylu086.netherite_horse_armor.NetheriteHorseArmor;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+
+import com.google.gson.JsonObject;
 
 // A very useful copy-paste class lol
 public class EasyCraftingCondition implements ICondition {
