@@ -34,5 +34,8 @@
       "netherite_horse_armor"
     ]
   ],
-  "sends_telemetry_event": true
+  "rewards": {
+    "experience": 50
+  },
+  "sends_telemetry_event": false
 }

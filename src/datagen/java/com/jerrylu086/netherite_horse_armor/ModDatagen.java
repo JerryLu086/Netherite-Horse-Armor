@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.models.BlockModelGenerators;
@@ -50,7 +51,8 @@ public class ModDatagen implements DataGeneratorEntrypoint {
 
         @Override
         public void generateAdvancement(Consumer<Advancement> consumer) {
-            var obtainNetheriteHorseArmor = Advancement.Builder.advancement()
+            // Why is it even called "recipeAdvancement"?
+            var obtainNetheriteHorseArmor = Advancement.Builder.recipeAdvancement()
                     .parent(getAdvancement("nether/loot_bastion"))
                     .display(
                             NetheriteHorseArmor.NETHERITE_HORSE_ARMOR,
@@ -62,6 +64,7 @@ public class ModDatagen implements DataGeneratorEntrypoint {
                             true,
                             true
                     )
+                    .rewards(AdvancementRewards.Builder.experience(50))
                     .addCriterion("netherite_horse_armor", InventoryChangeTrigger.TriggerInstance.hasItems(NetheriteHorseArmor.NETHERITE_HORSE_ARMOR))
                     .save(consumer, NetheriteHorseArmor.MOD_ID + ":obtain_netherite_horse_armor");
         }
