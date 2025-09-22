@@ -3,6 +3,7 @@ package com.jerrylu086.netherite_horse_armor;
 import com.jerrylu086.netherite_horse_armor.data.EasyCraftingCondition;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
@@ -63,11 +64,11 @@ public class ModDatagen {
     static class ModAdvancementProvider extends ForgeAdvancementProvider {
         public ModAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
             super(output, registries, existingFileHelper, List.of((registriez, consumer, helper) -> {
-                var nha = NetheriteHorseArmor.NETHERITE_HORSE_ARMOR.get();
-                var obtainNetheriteHorseArmor = Advancement.Builder.advancement()
+                // Why is it even called "recipeAdvancement"?
+                var obtainNetheriteHorseArmor = Advancement.Builder.recipeAdvancement()
                         .parent(getAdvancement("nether/loot_bastion"))
                         .display(
-                                nha,
+                                NetheriteHorseArmor.NETHERITE_HORSE_ARMOR.get(),
                                 Component.translatable(NetheriteHorseArmor.MOD_ID + ".advancements.obtain.title"),
                                 Component.translatable(NetheriteHorseArmor.MOD_ID + ".advancements.obtain.description"),
                                 null,
@@ -76,7 +77,8 @@ public class ModDatagen {
                                 true,
                                 true
                         )
-                        .addCriterion("netherite_horse_armor", InventoryChangeTrigger.TriggerInstance.hasItems(nha))
+                        .rewards(AdvancementRewards.Builder.experience(50))
+                        .addCriterion("netherite_horse_armor", InventoryChangeTrigger.TriggerInstance.hasItems(NetheriteHorseArmor.NETHERITE_HORSE_ARMOR.get()))
                         .save(consumer, NetheriteHorseArmor.MOD_ID + ":obtain_netherite_horse_armor");
             }));
         }
