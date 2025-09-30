@@ -11,6 +11,11 @@ base {
 }
 
 sourceSets {
+	main {
+		resources {
+			srcDirs += "src/main/generated"
+		}
+	}
 	datagen {
 		compileClasspath += main.compileClasspath
 		runtimeClasspath += main.runtimeClasspath
@@ -65,6 +70,7 @@ dependencies {
 }
 
 processResources {
+	exclude ".cache"
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
